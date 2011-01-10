@@ -132,6 +132,11 @@ class ApacheLogRegex
 
     data = {}
     names.each_with_index { |field, index| data[field] = match[index + 1] } # [0] == line
+    if data["%r"]
+      data["method"] = data["%r"][/^(\w*)/, 1]
+      data["resource"] = data["%r"][/(\/\S*) /, 1]
+      data["protocol"] = data["%r"][/.* (.*)$/, 1]
+    end
     data
   end
 
